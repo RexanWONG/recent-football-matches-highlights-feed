@@ -10,8 +10,9 @@ interface Fixture {
   embed: string;
 }
 
-const Client = () => { 
+const page = () => { 
   const [fixtures, setFixtures] = useState<Fixture[]>()
+  const [currentEmbed, setCurrentEmbed] = useState<string>()
 
   const getVideos = async () => {
     const options = {
@@ -41,23 +42,26 @@ const Client = () => {
             Recent fixtures
         </h1>
         {fixtures ? (
-           <div className='flex flex-row items-center justify-center mt-10'>
-              <Command className='border rounded-md w-[300px]'>    
-                  <CommandInput placeholder="Search for a fixture..." />
-                  <CommandList>
-                    <CommandEmpty>No results found.</CommandEmpty>
-                    <CommandGroup>
-                        {fixtures.map((fixture) => (
-                          <CommandItem className='hover:cursor-pointer'>
-                            {fixture.title}
-                          </CommandItem>
-                        ))}
+           <div className='flex flex-row items-center justify-center mt-10 gap-20'>
+              <div>
+                <Command className='border rounded-md w-[300px]'>    
+                    <CommandInput placeholder="Search for a fixture..." />
+                    <CommandList>
+                      <CommandEmpty>No results found.</CommandEmpty>
+                      <CommandGroup>
+                          {fixtures.map((fixture) => (
+                            <CommandItem className='hover:cursor-pointer' onSelect={() => setCurrentEmbed(fixture.embed)}>
+                              {fixture.title}
+                            </CommandItem>
+                          ))}
 
-                    </CommandGroup>
-                  </CommandList>
-
-                  
-              </Command>  
+                      </CommandGroup>
+                    </CommandList>
+                </Command>  
+              </div>
+              <div className='flex items-center justify-center w-[500px]'>
+                    {currentEmbed}
+              </div>
         </div>
         ) : (
           <></>
@@ -66,4 +70,4 @@ const Client = () => {
   )
 }  
 
-export default Client
+export default page
