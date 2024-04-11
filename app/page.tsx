@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { ModeToggle } from '@/components/mode-toggle';
@@ -18,7 +18,7 @@ const page = () => {
   const [currentEmbed, setCurrentEmbed] = useState<string>()
 
   const getVideos = async () => {
-    const options = {
+    const options: AxiosRequestConfig = {
       method: 'GET',  
       url: 'https://free-football-soccer-videos.p.rapidapi.com/',
       headers: {
