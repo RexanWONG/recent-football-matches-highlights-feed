@@ -10,7 +10,7 @@ interface Fixture {
   embed: string;
 }
 
-const page = () => { 
+const Client = () => { 
   const [fixtures, setFixtures] = useState<Fixture[]>()
   const [currentEmbed, setCurrentEmbed] = useState<string>()
 
@@ -30,6 +30,13 @@ const page = () => {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  function extractIframeSrc(htmlString: string): string | null {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlString, "text/html");
+      const iframe = doc.querySelector('iframe');
+      return iframe ? iframe.getAttribute('src') : null;
   }
    
   useEffect(() => {
@@ -59,9 +66,12 @@ const page = () => {
                     </CommandList>
                 </Command>  
               </div>
-              <div className='flex items-center justify-center w-[500px]'>
-                    {currentEmbed}
-              </div>
+              <iframe 
+                src={extractIframeSrc(currentEmbed || '') || ''}
+                width={800}
+                height={500}
+                allow='autoplay; fullscreen' 
+              />
         </div>
         ) : (
           <></>
@@ -70,4 +80,4 @@ const page = () => {
   )
 }  
 
-export default page
+export default Client
