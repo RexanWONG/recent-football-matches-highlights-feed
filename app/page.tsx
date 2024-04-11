@@ -4,13 +4,14 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { ModeToggle } from '@/components/mode-toggle';
 
 interface Fixture {
   title: string;
   embed: string;
 }
 
-const Client = () => { 
+const page = () => { 
   const [fixtures, setFixtures] = useState<Fixture[]>()
   const [currentEmbed, setCurrentEmbed] = useState<string>()
 
@@ -26,7 +27,6 @@ const Client = () => {
     
     try {  
       const response = await axios.request(options);
-      console.log(response)
       setFixtures(response.data as [])
     } catch (error) {
       console.error(error);
@@ -46,9 +46,6 @@ const Client = () => {
 
   return (
     <div className='flex flex-col min-h-screen items-center justify-center'>
-        <h1>
-            Recent fixtures
-        </h1>
         {fixtures ? (
            <div className='flex flex-row items-center justify-center mt-10 gap-20'>
               <div>
@@ -67,12 +64,23 @@ const Client = () => {
                     </CommandList>
                 </Command>  
               </div>
-              <iframe 
-                src={extractIframeSrc(currentEmbed || '') || ''}
-                width={800}
-                height={500}
-                allow='autoplay; fullscreen' 
-              />
+              {currentEmbed ? (    
+                <div className='flex flex-col items-start justify-center bg-transparent'>
+                    <iframe 
+                        src={extractIframeSrc(currentEmbed || '') || ''}
+                        width={800}
+                        height={500}
+                        allow='autoplay; fullscreen' 
+                        className='mb-2'
+                    />
+                    <ModeToggle />
+                </div>
+              ) : (
+                <div className='flex flex-col items-center justify-center'>
+                    <h1 className='mb-5'>Click on a game to watch it!</h1>
+                    <ModeToggle />
+                </div>
+              )} 
         </div>
         ) : (
           <></>
@@ -81,4 +89,4 @@ const Client = () => {
   )
 }  
 
-export default Client
+export default page
