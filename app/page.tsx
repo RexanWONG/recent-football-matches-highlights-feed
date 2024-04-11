@@ -26,6 +26,7 @@ const Client = () => {
     
     try {  
       const response = await axios.request(options);
+      console.log(response)
       setFixtures(response.data as [])
     } catch (error) {
       console.error(error);
@@ -51,9 +52,9 @@ const Client = () => {
         {fixtures ? (
            <div className='flex flex-row items-center justify-center mt-10 gap-20'>
               <div>
-                <Command className='border rounded-md w-[300px]'>    
+                <Command className='border rounded-lg w-[300px] min-h-[500px]'>    
                     <CommandInput placeholder="Search for a fixture..." />
-                    <CommandList>
+                    <CommandList className='min-h-[500px]'>
                       <CommandEmpty>No results found.</CommandEmpty>
                       <CommandGroup>
                           {fixtures.map((fixture) => (
