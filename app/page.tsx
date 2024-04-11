@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { ModeToggle } from '@/components/mode-toggle';
+import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 
 interface Fixture {
   title: string;
@@ -13,6 +14,7 @@ interface Fixture {
 
 const page = () => { 
   const [fixtures, setFixtures] = useState<Fixture[]>()
+  const [currentSelectedFixtureTitle, setCurrentSelectedFixtureTitle] = useState<string>()
   const [currentEmbed, setCurrentEmbed] = useState<string>()
 
   const getVideos = async () => {
@@ -55,7 +57,13 @@ const page = () => {
                       <CommandEmpty>No results found.</CommandEmpty>
                       <CommandGroup>
                           {fixtures.map((fixture) => (
-                            <CommandItem className='hover:cursor-pointer' onSelect={() => setCurrentEmbed(fixture.embed)}>
+                            <CommandItem 
+                                className='hover:cursor-pointer' 
+                                onSelect={() => {
+                                    setCurrentSelectedFixtureTitle(fixture.title)
+                                    setCurrentEmbed(fixture.embed);
+                                }}  
+                            >
                               {fixture.title}
                             </CommandItem>
                           ))}
@@ -73,7 +81,17 @@ const page = () => {
                         allow='autoplay; fullscreen' 
                         className='mb-2'
                     />
-                    <ModeToggle />
+                    <div className='flex flex-row items-center justify-center gap-5'>
+                        <ModeToggle />
+                        <a 
+                            href={`https://www.google.com/search?q=${currentSelectedFixtureTitle}&sourceid=chrome&ie=UTF-8`}
+                            target='_blank'
+                            rel="noopener noreferrer"
+                            className='flex flex-row items-center justify-center gap-2 hover:text-muted-foreground'
+                        >
+                            View more about this game <ArrowTopRightIcon />
+                        </a>
+                    </div>
                 </div>
               ) : (
                 <div className='flex flex-col items-center justify-center'>
